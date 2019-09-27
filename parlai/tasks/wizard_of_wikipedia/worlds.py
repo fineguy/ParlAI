@@ -111,3 +111,5 @@ class InteractiveWorld(DialogPartnerWorld):
             print('\n[ Preparing new chat... ]\n')
             self.cnt = 0
             self.model_agent.reset()
+
+        return self.acts[1]
