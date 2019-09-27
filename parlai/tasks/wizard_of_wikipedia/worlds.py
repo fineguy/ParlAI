@@ -73,7 +73,7 @@ class InteractiveWorld(DialogPartnerWorld):
         print('[ Your chosen topic is: {} ]'.format(chosen_topic))
         return chosen_topic
 
-    def parley(self):
+    def parley(self, msg_text=None):
         if self.cnt == 0 and not self.topic_list:
             self.generate_topics()
             self.topic = self.get_new_topic()
@@ -87,7 +87,7 @@ class InteractiveWorld(DialogPartnerWorld):
             self.acts[0] = act = Message({'text': '', 'episode_done': False})
             act = self.acts[0]
         else:
-            self.acts[0] = self.human_agent.act()
+            self.acts[0] = self.human_agent.act(msg_text)
             act = deepcopy(self.acts[0])
 
         # model agent observe
