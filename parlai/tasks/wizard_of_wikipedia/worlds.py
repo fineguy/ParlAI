@@ -47,10 +47,10 @@ class InteractiveWorld(DialogPartnerWorld):
         topics = random.sample(self.topic_list, self.num_topics - 1)
         topics.append(NO_TOPIC)
         letters = list(string.ascii_uppercase)[: self.num_topics]
-        self.topic_list = {x: y for x, y in zip(letters, topics)}
+        self.sampled_topic_list = {x: y for x, y in zip(letters, topics)}
 
     def get_new_topic(self):
-        topic_text = '\n'.join(['{}: {}'.format(k, v) for k, v in self.topic_list.items()])
+        topic_text = '\n'.join(['{}: {}'.format(k, v) for k, v in self.sampled_topic_list.items()])
 
         done = False
         while not done:
@@ -62,14 +62,14 @@ class InteractiveWorld(DialogPartnerWorld):
             )
             topic_act = self.human_agent.act()
             choice = topic_act['text'][0].upper()
-            if choice in self.topic_list:
+            if choice in self.sampled_topic_list:
                 done = True
             else:
                 self.human_agent.observe(
                     {'text': 'Invalid response, please try again.'}
                 )
 
-        chosen_topic = self.topic_list[choice]
+        chosen_topic = self.sampled_topic_list[choice]
         print('[ Your chosen topic is: {} ]'.format(chosen_topic))
         return chosen_topic
 
