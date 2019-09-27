@@ -31,7 +31,7 @@ class InteractiveWorld(DialogPartnerWorld):
         self.human_agent = self.agents[0]
         self.model_agent = self.agents[1]
         self.topic = None
-        self.topic_list = None
+        self.sampled_topic_list = None
 
     def load_topics(self, opt):
         # Load possible chosen topics
