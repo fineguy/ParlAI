@@ -47,6 +47,7 @@ class InteractiveWorld(DialogPartnerWorld):
         topics = random.sample(self.topic_list, self.num_topics - 1)
         topics.append(NO_TOPIC)
         letters = list(string.ascii_uppercase)[: self.num_topics]
+        self.topic = None
         self.sampled_topic_list = {x: y for x, y in zip(letters, topics)}
 
     def get_new_topic(self):
