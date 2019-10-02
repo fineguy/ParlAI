@@ -46,7 +46,7 @@ class LocalHumanAgent(Agent):
             )
         )
 
-    def act(self, reply_text=None):
+    def act(self, reply_text):
         reply = Message()
         reply['id'] = self.getID()
         reply_text = reply_text.replace('\\n', '\n')

@@ -42,8 +42,8 @@ class InteractiveWorld(DialogPartnerWorld):
         datatype = opt['datatype'].split(':')[0]
         self.topic_list = json.load(open(topics_path, 'rb'))[datatype]
 
-    def generate_topics(self):
-        random.seed()
+    def generate_topics(self, seed=None):
+        random.seed(seed=seed)
         topics = random.sample(self.topic_list, self.num_topics - 1)
         topics.append(NO_TOPIC)
         letters = list(string.ascii_uppercase)[: self.num_topics]
