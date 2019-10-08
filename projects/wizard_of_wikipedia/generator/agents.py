@@ -82,7 +82,7 @@ class TwoStageAgent(_GenericWizardAgent):
                 fields += [TOKEN_KNOWLEDGE, obs['checked_sentence']]
             if dialogue_history:
                 fields += [TOKEN_DIALOG, dialogue_history]
-            obs['text'] = ' '.join(fields)
+            obs.force_set('text', ' '.join(fields))
             obs['text_vec'] = self.dict.txt2vec(obs['text'])
 
         # check truncation
