@@ -86,10 +86,9 @@ class TwoStageAgent(_GenericWizardAgent):
             obs['text_vec'] = self.dict.txt2vec(obs['text'])
 
         # check truncation
-        if 'text_vec' in obs:
-            obs['text_vec'] = th.LongTensor(
-                self._check_truncate(obs['text_vec'], truncate, True)
-            )
+        obs.force_set('text_vec', th.LongTensor(
+            self._check_truncate(obs['text_vec'], truncate, True)
+        ))
 
         return obs
 
