@@ -77,7 +77,7 @@ class TwoStageAgent(_GenericWizardAgent):
             fields = []
             dialogue_history = history.get_history_str()
             if 'chosen_topic' in obs:
-                fields += [obs['title']]
+                fields += [obs.get('title', '')]
             if 'checked_sentence' in obs:
                 fields += [TOKEN_KNOWLEDGE, obs['checked_sentence']]
             if dialogue_history:
