@@ -203,7 +203,12 @@ class InteractiveEnd2endAgent(Agent):
         if self.debug:
             print('DEBUG: Retriever history:\n{}'.format(self.ret_history))
         responder_knowledge = self.retriever_act(self.ret_history)
-        obs['knowledge'] = responder_knowledge
+        if 'knowledge' in obs:
+            print('Previous knowledge: {}'.format(obs['knowledge']))
+            print('Previous knowledge: {}'.format(responder_knowledge))
+            obs.force_set('knowledge', responder_knowledge)
+        else:
+            obs['knowledge'] = responder_knowledge
         self.observation = obs
 
     def maintain_retrieved_texts(self, history, observation):
