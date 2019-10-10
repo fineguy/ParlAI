@@ -46,10 +46,9 @@ class LocalHumanAgent(Agent):
             )
         )
 
-    def act(self):
+    def act(self, reply_text):
         reply = Message()
         reply['id'] = self.getID()
-        reply_text = input("Enter Your Message: ")
         reply_text = reply_text.replace('\\n', '\n')
         if self.opt.get('single_turn', False):
             reply_text += '[DONE]'
