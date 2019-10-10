@@ -86,7 +86,6 @@ class InteractiveEnd2endAgent(Agent):
         # override these opts to build the responder model
         override_opts = {
             'model_file': opt['responder_model_file'],
-            'model': 'projects.wizard_of_wikipedia.generator.agents:EndToEndAgent',
             'datapath': opt['datapath'],
         }
         for k, v in override_opts.items():
