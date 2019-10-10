@@ -30,6 +30,8 @@ class InteractiveWorld(DialogPartnerWorld):
         self.cnt = 0
         self.human_agent = self.agents[0]
         self.model_agent = self.agents[1]
+        self.topic = None
+        self.sampled_topic_list = None
 
     def load_topics(self, opt):
         # Load possible chosen topics
@@ -40,13 +42,16 @@ class InteractiveWorld(DialogPartnerWorld):
         datatype = opt['datatype'].split(':')[0]
         self.topic_list = json.load(open(topics_path, 'rb'))[datatype]
 
-    def get_new_topic(self):
-        random.seed()
+    def generate_topics(self, seed=None):
+        random.seed(seed)
         topics = random.sample(self.topic_list, self.num_topics - 1)
         topics.append(NO_TOPIC)
         letters = list(string.ascii_uppercase)[: self.num_topics]
-        topic_list = {x: y for x, y in zip(letters, topics)}
-        topic_text = '\n'.join(['{}: {}'.format(k, v) for k, v in topic_list.items()])
+        self.topic = None
+        self.sampled_topic_list = {x: y for x, y in zip(letters, topics)}
+
+    def get_new_topic(self):
+        topic_text = '\n'.join(['{}: {}'.format(k, v) for k, v in self.sampled_topic_list.items()])
 
         done = False
         while not done:
@@ -58,20 +63,23 @@ class InteractiveWorld(DialogPartnerWorld):
             )
             topic_act = self.human_agent.act()
             choice = topic_act['text'][0].upper()
-            if choice in topic_list:
+            if choice in self.sampled_topic_list:
                 done = True
             else:
                 self.human_agent.observe(
                     {'text': 'Invalid response, please try again.'}
                 )
 
-        chosen_topic = topic_list[choice]
+        chosen_topic = self.sampled_topic_list[choice]
         print('[ Your chosen topic is: {} ]'.format(chosen_topic))
         return chosen_topic
 
-    def parley(self):
-        if self.cnt == 0:
+    def parley(self, msg_text=None):
+        if self.cnt == 0 and not self.topic_list:
+            self.generate_topics()
             self.topic = self.get_new_topic()
+
+        if self.cnt == 0:
             self.acts = [None, None]
             self.human_first = random.choice([0, 1])
 
@@ -80,7 +88,7 @@ class InteractiveWorld(DialogPartnerWorld):
             self.acts[0] = act = Message({'text': '', 'episode_done': False})
             act = self.acts[0]
         else:
-            self.acts[0] = self.human_agent.act()
+            self.acts[0] = self.human_agent.act(msg_text)
             act = deepcopy(self.acts[0])
 
         # model agent observe
@@ -104,3 +112,5 @@ class InteractiveWorld(DialogPartnerWorld):
             print('\n[ Preparing new chat... ]\n')
             self.cnt = 0
             self.model_agent.reset()
+
+        return self.acts[1]
