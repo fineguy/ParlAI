@@ -42,6 +42,7 @@ class InteractiveEnd2endAgent(Agent):
 
         self.id = 'WizardGenerativeInteractiveAgent'
         self.ret_history = {}
+        self.responder_id = opt.get('responder_id', 'WizardEnd2EndInteractiveAgent')
 
     @staticmethod
     def add_cmdline_args(argparser):
@@ -254,7 +255,7 @@ class InteractiveEnd2endAgent(Agent):
         responder_act = self.responder.act()
         if self.debug:
             print('DEBUG: Responder is acting:\n{}'.format(responder_act))
-        responder_act.force_set('id', 'WizardEnd2EndInteractiveAgent')
+        responder_act.force_set('id', self.responder_id)
         return responder_act
 
     def share(self):
