@@ -86,6 +86,7 @@ class InteractiveEnd2endAgent(Agent):
         # override these opts to build the responder model
         override_opts = {
             'model_file': opt['responder_model_file'],
+            'model': opt['model'],
             'datapath': opt['datapath'],
         }
         for k, v in override_opts.items():
